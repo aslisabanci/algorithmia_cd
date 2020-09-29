@@ -14,7 +14,8 @@ import hashlib
 # In[ ]:
 
 
-client = Algorithmia.client("YOUR_API_KEY")
+client = Algorithmia.client()
+
 
 def load_model_config(config_rel_path="model_config.json"):
     """Loads the model manifest file as a dict. 
@@ -42,6 +43,7 @@ def load_model(config):
     model_file = client.file(model_path).getFile().name
     model = joblib.load(model_file)
     return model_file, model
+
 
 def assert_model_md5(model_file):
     """
@@ -76,6 +78,14 @@ def apply(input):
 
 
 if __name__ == "__main__":
+
+    """
+    Remember to create the Algorithmia client object with your API Key when you're testing locally
+    So, change the Algorithmia client creation above to:
+    client = Algorithmia.client(YOUR_API_KEY)
+    But! remember not to commit/push this key for security!
+    """
+
     algo_input = "Simple test input"
     print(f"Calling algorithm apply() func with input: {algo_input}")
 
