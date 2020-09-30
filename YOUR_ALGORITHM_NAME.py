@@ -1,18 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import Algorithmia
 import json
 import os.path
 import joblib
-import hashlib
-
-
-# In[ ]:
-
 
 client = Algorithmia.client()
 
@@ -45,27 +34,8 @@ def load_model(config):
     return model_file, model
 
 
-def assert_model_md5(model_file):
-    """
-    Calculates the loaded model file's MD5 and compares the actual file hash with the hash on the model manifest
-    """
-    md5_hash = None
-    DIGEST_BLOCK_SIZE = 128 * 64
-    with open(model_file, "rb") as f:
-        hasher = hashlib.md5()
-        buf = f.read(DIGEST_BLOCK_SIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = f.read(DIGEST_BLOCK_SIZE)
-        md5_hash = hasher.hexdigest()
-    assert config["model_md5_hash"] == md5_hash
-    print("Model file MD5 assertion done.")
-
-
 config = load_model_config()
 model_file, model = load_model(config)
-assert_model_md5(model_file)
-print("MD5 assertion is okay, we have a perfectly uploaded model!")
 
 
 # API calls will begin at the apply() method, with the request body passed as 'input'
@@ -74,11 +44,7 @@ def apply(input):
     print(f"Echoing back input: {input}")
 
 
-# In[ ]:
-
-
 if __name__ == "__main__":
-
     """
     Remember to create the Algorithmia client object with your API Key when you're testing locally
     So, change the Algorithmia client creation above to:
