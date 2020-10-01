@@ -31,7 +31,9 @@ def load_model(config):
     model_path = config["model_filepath"]
     try:
         if __name__ == "__main__":
+            # Loading the model file as usual, since we're working with the local model file in this template
             return joblib.load(model_path)
+            # However, you can still load a model from an Algorithmia data collection if you initialize Algorithmia client with your API key.
         else:
             return joblib.load(client.file(model_path).getFile().name)
     except Exception as e:
