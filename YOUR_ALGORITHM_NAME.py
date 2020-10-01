@@ -29,32 +29,29 @@ def load_model_config(config_rel_path="model_config.json"):
 def load_model(config):
     """Loads the model object from the file at model_filepath key in config dict"""
     model_path = config["model_filepath"]
-    model_file = client.file(model_path).getFile().name
-    model = joblib.load(model_file)
-    return model_file, model
+    try:
+        if __name__ == "__main__":
+            return joblib.load(model_path)
+        else:
+            return joblib.load(client.file(model_path).getFile().name)
+    except Exception as e:
+        print("Exception occurred while loading the model file: {}".format(e))
+        return None
 
 
 config = load_model_config()
-model_file, model = load_model(config)
+model = load_model(config)
 
 
 # API calls will begin at the apply() method, with the request body passed as 'input'
 # For more details, see algorithmia.com/developers/algorithm-development/languages
 def apply(input):
-    print(f"Echoing back input: {input}")
+    # You can use your model object here
+    return f"Echoing back input: {input}"
 
 
 if __name__ == "__main__":
-    """
-    Remember to create the Algorithmia client object with your API Key when you're testing locally
-    So, change the Algorithmia client creation above to:
-    client = Algorithmia.client(YOUR_API_KEY)
-    But! remember not to commit/push this key for security!
-    """
-
-    algo_input = "Simple test input"
-    print(f"Calling algorithm apply() func with input: {algo_input}")
-
-    algo_result = apply(algo_input)
+    # Now the apply() function will be able to access the locally loaded model
+    algo_result = apply("Test input")
     print(algo_result)
 
