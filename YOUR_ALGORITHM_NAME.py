@@ -12,7 +12,8 @@ def load_model_config(config_rel_path="model_config.json"):
     {
       "model_filepath": Uploaded model path on Algorithmia data collection
       "model_md5_hash": MD5 hash of the uploaded model file
-      "model_origin_repo": Model development repository having the Github CI workflow
+      "model_origin_repo": Model development repository with the Github CI workflow
+      "model_origin_ref": Branch of the model development repository related to the trigger of the CI workflow, 
       "model_origin_commit_SHA": Commit SHA related to the trigger of the CI workflow
       "model_origin_commit_msg": Commit message related to the trigger of the CI workflow
       "model_uploaded_utc": UTC timestamp of the automated model upload
@@ -48,7 +49,6 @@ model = load_model(config)
 # API calls will begin at the apply() method, with the request body passed as 'input'
 # For more details, see algorithmia.com/developers/algorithm-development/languages
 def apply(input):
-    # You can use your model object here
     return f"Echoing back input: {input}"
 
 
